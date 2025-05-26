@@ -1,60 +1,3 @@
-// Adicione este bloco de comentários no início do seu arquivo User.js
-
-/**
- * @swagger
- * components:
- *   schemas:
- *     User:
- *       type: object
- *       required:
- *         - nome
- *         - email
- *         - senha
- *       properties:
- *         _id:
- *           type: string
- *           description: ID único gerado pelo MongoDB
- *         nome:
- *           type: string
- *           description: Nome completo do usuário
- *         email:
- *           type: string
- *           format: email
- *           description: Email do usuário (único)
- *         senha:
- *           type: string
- *           format: password
- *           description: Senha do usuário (armazenada com hash)
- *         cargo:
- *           type: string
- *           description: Cargo ou função do usuário
- *         departamento:
- *           type: string
- *           description: Departamento ao qual o usuário pertence
- *         permissoes:
- *           type: array
- *           items:
- *             type: string
- *           description: Lista de permissões do usuário
- *         ativo:
- *           type: boolean
- *           default: true
- *           description: Indica se o usuário está ativo no sistema
- *         criadoEm:
- *           type: string
- *           format: date-time
- *           description: Data de criação do usuário
- *       example:
- *         nome: João Silva
- *         email: joao@exemplo.com
- *         cargo: Investigador
- *         departamento: Investigação
- *         permissoes: ['ler_casos', 'editar_casos']
- *         ativo: true
- */
-
-
-
 import mongoose, { Schema, Document, CallbackError } from 'mongoose';
 import bcrypt from 'bcrypt';
 
@@ -135,4 +78,3 @@ UserSchema.methods.comparePassword = async function (candidatePassword: string):
 };
 
 export default mongoose.model<IUser>('User', UserSchema);
-

@@ -1,5 +1,3 @@
-// src/routes/casoRoutes.ts
-
 import { Router } from 'express';
 import { createCaso, listCasos, updateCaso, deleteCaso, getCasoById } from '../controllers/casoController';
 import { parseCookies, authenticateJWT, authorizeRoles } from '../middlewares/authMiddleware';

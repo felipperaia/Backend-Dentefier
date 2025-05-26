@@ -1,4 +1,3 @@
-// src/controllers/casoController.ts
 import { Request, Response } from 'express';
 import Caso from '../models/Caso';
 import Evidencia from '../models/Evidencia';
@@ -6,13 +5,15 @@ import { AuthRequest } from '../middlewares/authMiddleware';
 
 export const createCaso = async (req: AuthRequest, res: Response) => {
   try {
-    const { lat, lng, enderecoCompleto, vitimas, ...rest } = req.body;
-    const localizacao = lat && lng ? { lat: +lat, lng: +lng, enderecoCompleto } : undefined;
+    const { lat, lng, enderecoCompleto, ...rest } = req.body;
+    const localizacao = lat && lng
+      ? { lat: +lat, lng: +lng, enderecoCompleto }
+      : undefined;
+
     const novo = new Caso({
       ...rest,
       responsavel: req.user!.id,
       localizacao,
-      vitimas: vitimas || [],
       dataAbertura: new Date(rest.dataAbertura)
     });
     await novo.save();
@@ -23,11 +24,10 @@ export const createCaso = async (req: AuthRequest, res: Response) => {
   }
 };
 
+
 export const listCasos = async (req: Request, res: Response) => {
   try {
-    const casos = await Caso.find()
-      .populate('responsavel', 'username')
-      .populate('vitimas');
+    const casos = await Caso.find();
     res.json(casos);
   } catch (error) {
     res.status(500).json({ message: 'Erro ao listar casos', error });
@@ -37,8 +37,7 @@ export const listCasos = async (req: Request, res: Response) => {
 export const updateCaso = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const updatedCaso = await Caso.findByIdAndUpdate(id, req.body, { new: true })
-      .populate('vitimas');
+    const updatedCaso = await Caso.findByIdAndUpdate(id, req.body, { new: true });
     res.json({ message: 'Caso atualizado', caso: updatedCaso });
   } catch (error) {
     res.status(500).json({ message: 'Erro ao atualizar caso', error });
@@ -57,16 +56,20 @@ export const deleteCaso = async (req: Request, res: Response) => {
 
 export const getCasoById = async (req: Request, res: Response) => {
   try {
+    // Pega o caso e popula quem é o perito responsável
     const caso = await Caso.findById(req.params.id)
-      .populate('responsavel', 'username')
-      .populate('vitimas');
+      .populate('responsavel', 'username');
     if (!caso) return res.status(404).json({ message: 'Caso não encontrado' });
+
+    // Puxa todas as evidências e popula quem as registrou
     const evidencias = await Evidencia.find({ caso: caso._id })
       .populate('registradoPor', 'username')
       .sort({ createdAt: -1 });
+
     res.json({ caso, evidencias });
   } catch (error) {
     console.error('Erro ao obter caso:', error);
     res.status(500).json({ message: 'Erro ao obter caso', error });
   }
 };
+
