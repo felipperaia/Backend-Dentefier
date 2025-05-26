@@ -7,7 +7,6 @@ import cookieParser from 'cookie-parser';
 import casoRoutes from './routes/casoRoutes';
 import authRoutes from './routes/authRoutes';
 import userRoutes from './routes/userRoutes';
-import vitimaRoutes from './routes/vitimaRoutes';
 import evidenciaRoutes from './routes/evidenciaRoutes';
 import { parseCookies } from './middlewares/authMiddleware';
 
@@ -62,7 +61,6 @@ app.use('/api/casos', casoRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/evidencias', evidenciaRoutes);
-app.use('/api/vitima', vitimaRoutes);
 
 // Middleware de erro
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
