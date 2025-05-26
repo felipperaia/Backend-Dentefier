@@ -1,7 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import connectDB from './config/db';
-import path from 'path';
 import dotenv from 'dotenv';
 import axios from 'axios';
 import cookieParser from 'cookie-parser';
@@ -32,14 +31,6 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(parseCookies);
-
-
-// Servir front-end
-const publicPath = path.join(__dirname, '../../frontend/public');
-app.use(express.static(publicPath));
-app.get('/', (req, res) => {
-  res.sendFile(path.join(publicPath, 'index.html'));
-});
 
 // Endpoint para expor a chave da API de forma segura
 app.get('/api/config', (_req, res) => {
