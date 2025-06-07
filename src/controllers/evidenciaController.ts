@@ -40,6 +40,19 @@ export const createEvidencia = async (req: Request, res: Response) => {
   }
 };
 
+export const listAllEvidencias = async (req: Request, res: Response) => {
+  try {
+    const evs = await Evidencia.find()
+      .select('-arquivo.data')
+      .populate('registradoPor', 'username')
+      .sort({ createdAt: -1 });
+    res.json(evs);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Erro ao listar todas evidências' });
+  }
+};
+
 export const listEvidenciasByCaso = async (req: Request, res: Response) => {
   try {
     const { casoId } = req.params;

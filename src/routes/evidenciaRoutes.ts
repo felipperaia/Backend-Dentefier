@@ -7,7 +7,8 @@ import {
   getEvidenciaById,
   updateEvidencia,
   deleteEvidencia,
-  downloadEvidenciaFile
+  downloadEvidenciaFile,
+  listAllEvidencias
 } from '../controllers/evidenciaController';
 import { authenticateJWT, authorizeRoles } from '../middlewares/authMiddleware';
 
@@ -34,6 +35,13 @@ router.get(
   authenticateJWT,
   authorizeRoles('admin', 'perito', 'assistente'),
   listEvidenciasByCaso
+);
+
+router.get(
+  '/',
+  authenticateJWT,
+  authorizeRoles('admin','perito','assistente'),
+  listAllEvidencias
 );
 
 router.get(
